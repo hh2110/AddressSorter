@@ -35,26 +35,34 @@ with open('api.txt') as f:
 gmaps_key=googlemaps.Client(key =myAPIkey)
 
 # create empty Lon and Lat columns ... and google maps name
+# geocode_object should be included too 
 data["LAT"] = None
 data["LON"] = None
 data["GMAPS_NAME"] = None
+data["GEOCODE_OBJECT"] = None
+data["PARTIAL_RESULT"] = None
 
 # find lat, lon for a random 50 addresses and add them to the dataFrame
 chosen=random.sample(range(0, len(data)), 50)
+chosen=range(0,len(data))
 for i in chosen:
     geocode_result = gmaps_key.geocode(data['pntAddress'][i]+', Pakistan')
     try:
         lat = geocode_result[0]["geometry"]["location"]["lat"]
         lon = geocode_result[0]["geometry"]["location"]["lng"]
         gname = geocode_result[0]["formatted_address"]
+        gdata = geocode_result[0]
+        partial = checkPartialMatch(geocode_result)
         data.iat[i, data.columns.get_loc("LAT")] = lat
         data.iat[i, data.columns.get_loc("LON")] = lon
         data.iat[i, data.columns.get_loc("GMAPS_NAME")] = gname
+        data.iat[i, data.columns.get_loc("GEOCODE_OBJECT")] = gdata
+        data.iat[i, data.columns.get_loc("PARTIAL_RESULT")] = partial
     except:
         gname = None
         lat = None 
         lon = None
-        print(i, data['pntAddress'][i])
+        print("couldn't find address", i, data['pntAddress'][i])
 
 # isloate the lon and lat data
 latList=data["LAT"].values;
@@ -73,5 +81,6 @@ gmap.heatmap(latList, lonList,
 gmap.scatter(latList, lonList)
 gmap.draw('HeatmapPlusScatter.html')
 
-# on inspection of the html - the locations are not spread out 
-# rather they are pinned at specific locations - for example, the
+#save the new dataframe that holds all the information
+data.to_csv('./data/GMapsAddresses')
+
