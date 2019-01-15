@@ -1,0 +1,18 @@
+Tue 150118 1540
+# on inspection of the html - the locations are not spread out 
+# rather they are pinned at specific locations - for example, the
+# most common entry in 100 randomly chosen addresses is Peshawar itself
+# on further inspection - when using geocode to find address, sometimes, 
+# it gives a suggestion which is usually Peshawar - need to monitor these
+# suggestions somehow
+# Results:
+#  some results are given as partial matches, often leading to a city result
+#  need to monitor the output on the partials - usually revert back to a result
+# of just peshawar - which is an issue 
+# Actions:
+#  save the geocode object
+#  also save parital result in a spearate column too
+#  create new dataframe with above data so we don't need to keep using api
+#  test the result against the input to see how close the match is**
+
+
