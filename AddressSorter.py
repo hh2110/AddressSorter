@@ -41,7 +41,7 @@ data["GMAPS_NAME"] = None
 # find lat, lon for a random 50 addresses and add them to the dataFrame
 chosen=random.sample(range(0, len(data)), 50)
 for i in chosen:
-    geocode_result = gmaps_key.geocode(data['pntAddress'][i]+'Pakistan')
+    geocode_result = gmaps_key.geocode(data['pntAddress'][i]+', Pakistan')
     try:
         lat = geocode_result[0]["geometry"]["location"]["lat"]
         lon = geocode_result[0]["geometry"]["location"]["lng"]
