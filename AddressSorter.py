@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from gmplot import gmplot
 import googlemaps
+import random
 
 # read in csv as df (with the first column as index_col)
 data = pd.read_csv("./data/Jan19_SH.csv", index_col=0)
@@ -37,10 +38,10 @@ data["LAT"] = None
 data["LON"] = None
 data["GMAPS_NAME"] = None
 
-# find lat, lon for some addresses and add them to the dataFrame
-iMin=220; iMax=230
-for i in range(iMin, iMax):
-    geocode_result = gmaps_key.geocode(data['pntAddress'][i]+', Peshawar, Pakistan')
+# find lat, lon for a random 50 addresses and add them to the dataFrame
+chosen=random.sample(range(0, len(data)), 50)
+for i in chosen:
+    geocode_result = gmaps_key.geocode(data['pntAddress'][i]+'Pakistan')
     try:
         lat = geocode_result[0]["geometry"]["location"]["lat"]
         lon = geocode_result[0]["geometry"]["location"]["lng"]
@@ -64,9 +65,12 @@ latList=latList[latList != np.array(None)]
 lonList=lonList[lonList != np.array(None)]
 
 # use gmap to create a heatmap and scatter graph of the addresses
-gmap = gmplot.GoogleMapPlotter(33.99, 71.52, 14, apikey=myAPIkey)
+gmap = gmplot.GoogleMapPlotter(33.99, 71.52, 12, apikey=myAPIkey)
 gmap.heatmap(latList, lonList,
              threshold=100, radius=50, opacity=0.7,
              dissipating=True)
 gmap.scatter(latList, lonList)
 gmap.draw('HeatmapPlusScatter.html')
+
+# on inspection of the html - the locations are not spread out 
+# rather they are pinned at specific locations - for example, the
