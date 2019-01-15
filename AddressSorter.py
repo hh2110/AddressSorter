@@ -6,7 +6,7 @@ from gmplot import gmplot
 import googlemaps
 
 # read in csv as df (with the first column as index_col)
-data = pd.read_csv("Jan19_SH.csv", index_col=0)
+data = pd.read_csv("./data/Jan19_SH.csv", index_col=0)
 
 # remove unwanted columns
 unwanted=['opdhVbp', 'vstId', 'vstDate', 'opdhVpulse',
@@ -26,9 +26,11 @@ print('number of empty cells after fillna', data.isnull().sum(), '\n')
 print('type of data in the df ', data.dtypes)
 print('shape of dataFrame ', np.shape(data), '\n')
 
-# need to use googlemaps to find lat and long of addresses
+# need to use googlemaps to find lat and loong of addresses
+with open('api.txt') as f:
+    myAPIkey=f.readline()
 # set the api key first
-gmaps_key=googlemaps.Client(key = "AIzaSyCs3BXFn2MvHeIE29RZzvn0jLesSJaMh3I")
+gmaps_key=googlemaps.Client(key =myAPIkey)
 
 # create empty Lon and Lat columns ... and google maps name
 data["LAT"] = None
@@ -62,7 +64,7 @@ latList=latList[latList != np.array(None)]
 lonList=lonList[lonList != np.array(None)]
 
 # use gmap to create a heatmap and scatter graph of the addresses
-gmap = gmplot.GoogleMapPlotter(33.99, 71.52, 14, apikey='AIzaSyCs3BXFn2MvHeIE29RZzvn0jLesSJaMh3I')
+gmap = gmplot.GoogleMapPlotter(33.99, 71.52, 14, apikey=myAPIkey)
 gmap.heatmap(latList, lonList,
              threshold=100, radius=50, opacity=0.7,
              dissipating=True)
