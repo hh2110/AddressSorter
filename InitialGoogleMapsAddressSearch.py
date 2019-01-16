@@ -8,7 +8,7 @@ import googlemaps
 import random
 
 # read in csv as df (with the first column as index_col)
-data = pd.read_csv("./data/Jan19_SH.csv", index_col=0)
+data = pd.read_csv("./data/CleanPtData.csv", index_col=0)
 
 # need to use googlemaps to find lat and loong of addresses
 with open('api.txt') as f:
@@ -29,6 +29,9 @@ chosen=random.sample(range(0, len(data)), 50)
 chosen=range(0,len(data))
 for i in chosen:
     geocode_result = gmaps_key.geocode(data['pntAddress'][i]+', Pakistan')
+    if i%100==0:
+        print(i)
+        data.to_csv('./data/GMapsAddress_'+str(i)+'.csv')
     try:
         lat = geocode_result[0]["geometry"]["location"]["lat"]
         lon = geocode_result[0]["geometry"]["location"]["lng"]

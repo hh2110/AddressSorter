@@ -7,12 +7,13 @@ import random
 import Levenshtein as lev
 from gmplot import gmplot
 import googlemaps
+from datetime import datetime
 
 # this script is checking how good the google maps 
 #results are relative to the input 
 
 # read in csv as df (with the first column as index_col)
-data = pd.read_csv("./data/GMapsAddresses.csv", index_col=0)
+data = pd.read_csv("./data/GMapsAddress_1329.csv", index_col=0)
 
 # we need to conpare each gm_result with the input
 # there is a choice in which words to compare in both 
@@ -25,7 +26,6 @@ data = pd.read_csv("./data/GMapsAddresses.csv", index_col=0)
 #we can take that as a spelling error and 100% match otherwise we give a 0
 
 #will need a new column measuring precision
-data['PRECISION']=None
 data['MATCHING']=None
 
 counter=0
@@ -40,34 +40,12 @@ for index, row in data.iterrows():
         else:
             data.iat[index, data.columns.get_loc('MATCHING')]=0
 
+accuracy=round((counter/len(data))*100, 4)
+print('accuracy of the results', accuracy) 
+
 data=data.loc[data['MATCHING']==1]
 
-# isloate the lon and lat data
-latList=data["LAT"].values;
-lonList=data["LON"].values;
-
-# now we can plot the matches that have a lev distance < 2
-# remove any None values for where lon and lat data could not be found
-# or where address was not searched for
-latList=latList[latList != np.array(None)]
-lonList=lonList[lonList != np.array(None)]
-
-# need to use googlemaps to find lat and loong of addresses
-with open('api.txt') as f:
-    myAPIkey=f.readline()
-# set the api key first
-gmaps_key=googlemaps.Client(key =myAPIkey)
-
-# use gmap to create a heatmap and scatter graph of the addresses
-gmap = gmplot.GoogleMapPlotter(33.99, 71.52, 12, apikey=myAPIkey)
-gmap.heatmap(latList, lonList,
-             threshold=1, radius=50, opacity=0.7,
-             dissipating=True)
-gmap.scatter(latList, lonList)
-gmap.draw('HeatmapPlusScatterAccurate.html')
-
 #save the new dataframe that holds all the information
-data.to_csv('./data/GMapsAddressesAccurate')
+time=datetime.now().strftime('%H%M')
+data.to_csv('./data/GMapsAddressesAccurate_'+time+'.csv')
 
-accuracy=round((counter/len(data))*100, 4)
-print(accuracy) 

@@ -5,9 +5,10 @@ import math
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
+from datetime import datetime
 
 # create dataframe
-data = pd.read_csv('./data/GMapsAddressesAccurate.csv', index_col=0)
+data = pd.read_csv('./data/GMapsAddressesAccurate_1848.csv', index_col=0)
 
 # isloate the lon and lat data
 latList=data["LAT"].values;
@@ -29,5 +30,7 @@ heat = HeatMap( list(zip(data.LAT.values, data.LON.values)),
                  )
 
 hmap.add_child(heat)
-hmap.save(os.path.join('data', 'folium.html'))
+
+time=datetime.now().strftime('%H%M')
+hmap.save('./data/'+'folium_'+time+'.html')
 
