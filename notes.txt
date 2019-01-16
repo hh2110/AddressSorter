@@ -10,9 +10,21 @@ Tue 150118 1540
 #  need to monitor the output on the partials - usually revert back to a result
 # of just peshawar - which is an issue 
 # Actions:
-#  save the geocode object
-#  also save parital result in a spearate column too
-#  create new dataframe with above data so we don't need to keep using api
-#  test the result against the input to see how close the match is**
+#  save the geocode object DONE
+#  also save parital result in a spearate column too DONE
+#  create new dataframe with above so we dont need to keep using api DONE
+#  test the result against the input to see how close the match is** - called
+#address tester
+
+Tue 150118 1640
+# the new heat/scatter map could be improved - maybe a pcolormesh
+# the accuracy of the results from google maps is 48% which increases to 60%
+when we include lev distances of 0 or 1
+
+Wed 160118 1029
+# focus on visualisation now - getting a nice image with the 60% accurate data
+#this is possible with folium - very nice (finished)
+# could also run the 15,000 addresses - will start
+
 
 
