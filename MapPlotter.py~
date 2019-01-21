@@ -8,8 +8,8 @@ import pandas as pd
 from datetime import datetime
 
 # create dataframe
-#data = pd.read_csv('../data/GMapsAddress_1329.csv', index_col=0)
-data = pd.read_csv('../data/GMapsAddressesAccurate_1848.csv', index_col=0)
+data = pd.read_csv('../data/GMapsAddress_1329.csv', index_col=0)
+#data = pd.read_csv('../data/GMapsAddressesAccurate_1848.csv', index_col=0)
 # isloate the lon and lat data
 latList=data["LAT"].values;
 lonList=data["LON"].values;
@@ -32,5 +32,5 @@ heat = HeatMap( list(zip(latList, lonList)),
 hmap.add_child(heat)
 
 time=datetime.now().strftime('%H%M')
-hmap.save('../data/'+'final_folium'+time+'.html')
+hmap.save('../data/'+'initial_folium'+time+'.html')
 
